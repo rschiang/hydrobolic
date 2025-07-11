@@ -1,8 +1,8 @@
 //
 //  SHButton.h
-//  Boli
+//  Hydrobolic
 //
-//  Created by 姜柏任 on 2025/7/11.
+//  Declares a subclassed NSButton with our custom ButtonCell.
 //
 
 #import <Cocoa/Cocoa.h>

@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		2B8180012E20DC6900B5C9BA /* libBoli.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBoli.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B8180012E20DC6900B5C9BA /* libHydrobolic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHydrobolic.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2B8180182E20E2B800B5C9BA /* Exceptions for "Boli" folder in "Boli" target */ = {
+		2B8180182E20E2B800B5C9BA /* Exceptions for "Hydrobolic" folder in "Hydrobolic" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Boli-Bridging-Header.h",
+				"Hydrobolic-Bridge.h",
 			);
-			target = 2B8180002E20DC6900B5C9BA /* Boli */;
+			target = 2B8180002E20DC6900B5C9BA /* Hydrobolic */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		2B8180032E20DC6900B5C9BA /* Boli */ = {
+		2B8180032E20DC6900B5C9BA /* Hydrobolic */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2B8180182E20E2B800B5C9BA /* Exceptions for "Boli" folder in "Boli" target */,
+				2B8180182E20E2B800B5C9BA /* Exceptions for "Hydrobolic" folder in "Hydrobolic" target */,
 			);
-			path = Boli;
+			path = Hydrobolic;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +45,7 @@
 		2B817FF82E20DC6900B5C9BA = {
 			isa = PBXGroup;
 			children = (
-				2B8180032E20DC6900B5C9BA /* Boli */,
+				2B8180032E20DC6900B5C9BA /* Hydrobolic */,
 				2B8180022E20DC6900B5C9BA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,7 +53,7 @@
 		2B8180022E20DC6900B5C9BA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2B8180012E20DC6900B5C9BA /* libBoli.a */,
+				2B8180012E20DC6900B5C9BA /* libHydrobolic.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,9 +71,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		2B8180002E20DC6900B5C9BA /* Boli */ = {
+		2B8180002E20DC6900B5C9BA /* Hydrobolic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B81800A2E20DC6A00B5C9BA /* Build configuration list for PBXNativeTarget "Boli" */;
+			buildConfigurationList = 2B81800A2E20DC6A00B5C9BA /* Build configuration list for PBXNativeTarget "Hydrobolic" */;
 			buildPhases = (
 				2B817FFD2E20DC6900B5C9BA /* Headers */,
 				2B817FFE2E20DC6900B5C9BA /* Sources */,
@@ -84,13 +84,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				2B8180032E20DC6900B5C9BA /* Boli */,
+				2B8180032E20DC6900B5C9BA /* Hydrobolic */,
 			);
-			name = Boli;
+			name = Hydrobolic;
 			packageProductDependencies = (
 			);
 			productName = Boli;
-			productReference = 2B8180012E20DC6900B5C9BA /* libBoli.a */;
+			productReference = 2B8180012E20DC6900B5C9BA /* libHydrobolic.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -108,7 +108,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2B817FFC2E20DC6900B5C9BA /* Build configuration list for PBXProject "Boli" */;
+			buildConfigurationList = 2B817FFC2E20DC6900B5C9BA /* Build configuration list for PBXProject "Hydrobolic" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -122,7 +122,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B8180002E20DC6900B5C9BA /* Boli */,
+				2B8180002E20DC6900B5C9BA /* Hydrobolic */,
 			);
 		};
 /* End PBXProject section */
@@ -261,7 +261,7 @@
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Boli/Boli-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Hydrobolic/Hydrobolic-Bridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 			};
@@ -275,7 +275,7 @@
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Boli/Boli-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Hydrobolic/Hydrobolic-Bridge.h";
 				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
@@ -283,7 +283,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2B817FFC2E20DC6900B5C9BA /* Build configuration list for PBXProject "Boli" */ = {
+		2B817FFC2E20DC6900B5C9BA /* Build configuration list for PBXProject "Hydrobolic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B8180082E20DC6900B5C9BA /* Debug */,
@@ -292,7 +292,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B81800A2E20DC6A00B5C9BA /* Build configuration list for PBXNativeTarget "Boli" */ = {
+		2B81800A2E20DC6A00B5C9BA /* Build configuration list for PBXNativeTarget "Hydrobolic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B81800B2E20DC6A00B5C9BA /* Debug */,

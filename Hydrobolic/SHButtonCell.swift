@@ -1,8 +1,8 @@
 //
 //  SHButtonCell.swift
-//  Boli
+//  Hydrobolic
 //
-//  Created by 姜柏任 on 2025/7/11.
+//  Declares a custom ButtonCell to draw Aqua-inspired custom buttons.
 //
 
 import Foundation

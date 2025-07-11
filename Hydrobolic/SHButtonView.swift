@@ -1,8 +1,8 @@
 //
 //  SHButtonView.swift
-//  Boli
+//  Hydrobolic
 //
-//  Created by 姜柏任 on 2025/7/11.
+//  SwiftUI-based playground for swift previews.
 //
 
 import SwiftUI

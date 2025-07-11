@@ -1,12 +1,12 @@
 //
 //  SHButton.m
-//  Boli
+//  Hydrobolic
 //
-//  Created by 姜柏任 on 2025/7/11.
+//  This file subclasses NSButton in order to use our own subclassed ButtonCell.
 //
 
 #import "SHButton.h"
-#import "Boli-Swift.h"
+#import "Hydrobolic-Swift.h"
 
 @implementation SHButton
 
