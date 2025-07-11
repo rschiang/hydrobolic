@@ -91,8 +91,8 @@ class SHButtonCell: NSButtonCell {
                         controlPoint2: .init(x: topLeftPoint.x - radius / 2, y: topLeftPoint.y))
         highlight.close()
 
-        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: 0.97),
-                                       ending: NSColor(white: 1.0, alpha: 0.5))
+        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : 0.97),
+                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : 0.5))
         highlightFill!.draw(in: highlight, angle: 90.0)
     }
 
