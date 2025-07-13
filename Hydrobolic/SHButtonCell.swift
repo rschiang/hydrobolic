@@ -26,6 +26,7 @@ class SHButtonCell: NSButtonCell {
     override func drawBezel(withFrame frame: NSRect, in controlView: NSView) {
         let rect = calculateFrame(forControlView: controlView)
         let isDark = controlView.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+        let accentColor = (controlView as! NSButton).contentTintColor ?? NSColor.controlAccentColor
 
         NSGraphicsContext.saveGraphicsState()
 
@@ -42,40 +43,48 @@ class SHButtonCell: NSButtonCell {
 
         NSGraphicsContext.restoreGraphicsState()
 
-        let backgroundFill = isHighlighted ?
-                                NSGradient(colorsAndLocations:
-                                            (NSColor(red: 0.114, green: 0.612, blue: 0.988, alpha: 1.0), 0),
-                                            (NSColor(red: 0.501, green: 0.737, blue: 0.949, alpha: 1.0), 0.42),
-                                            (NSColor(red: 0.565, green: 0.788, blue: 0.984, alpha: 1.0), 0.56),
-                                            (NSColor(red: 0.631, green: 0.855, blue: 1.0, alpha: 1.0), 0.77),
-                                            (NSColor(red: 0.733, green: 0.925, blue: 1.0, alpha: 1.0), 1)) :
-                                NSGradient(colorsAndLocations:
+        if (isHighlighted) {
+            let accentFill = NSGradient(colorsAndLocations:
+                                            (accentColor, 0),
+                                        (accentColor.withAlphaComponent(0.44), 0.56),
+                                        (accentColor.withAlphaComponent(0.25), 1))
+            accentFill!.draw(in: background, angle: 90.0)
+        }
+
+        let backgroundFill = NSGradient(colorsAndLocations:
                                             (NSColor(white: 0, alpha: 0.24), 0),
                                             (NSColor(white: 0, alpha: 0.04), 0.77),
                                             (NSColor(white: 0, alpha: 0), 1))
         backgroundFill!.draw(in: background, angle: 90.0)
 
-        let border = NSBezierPath(roundedRect: rect.insetBy(dx: -1.0, dy: -1.0), xRadius: radius + 1.0, yRadius: radius + 1.0)
-        border.append(background.reversed)
+        let outer = NSBezierPath(roundedRect: rect.insetBy(dx: -2.0, dy: -2.0), xRadius: radius + 2.0, yRadius: radius + 2.0)
+        outer.append(background.reversed)
 
         NSGraphicsContext.saveGraphicsState()
         background.setClip()
 
         let innerShadow = NSShadow()
-        innerShadow.shadowColor = (isDark && !isHighlighted) ? NSColor(white: 1, alpha: 0.1) : NSColor(white: 0, alpha: 0.2)
-        innerShadow.shadowOffset = CGSize(width: 0, height: -2)
-        innerShadow.shadowBlurRadius = 3
+        innerShadow.shadowColor = (isDark || isHighlighted) ? NSColor(white: 1, alpha: 0.1) : NSColor(white: 0, alpha: 0.2)
+        innerShadow.shadowOffset = CGSize(width: 0, height: -1)
+        innerShadow.shadowBlurRadius = 4
         innerShadow.set()
 
-        let borderStroke = NSColor(white: 0.44, alpha: 1.0)
-        borderStroke.setFill()
-        border.fill()
+        let outerFill = NSColor(white: 0.44, alpha: 1.0)
+        outerFill.setFill()
+        outer.fill()
         NSGraphicsContext.restoreGraphicsState()
 
-        let borderFill = NSGradient(starting: isHighlighted ?
-                                    NSColor(red: 0.153, green: 0.153, blue: 0.604, alpha: 1.0) : NSColor(white: 0, alpha: 0.55),
-                                    ending: NSColor(white: 0, alpha: 0.627))
-        borderFill!.draw(in: border, angle: 90.0)
+        let border = NSBezierPath(roundedRect: rect.insetBy(dx: -1.0, dy: -1.0), xRadius: radius + 1, yRadius: radius + 1)
+        border.append(background.reversed)
+
+        let borderStroke = NSColor(white: isDark ? 0.22 : 0, alpha: 0.44)
+        if (isHighlighted) {
+            let borderFill = NSGradient(starting: accentColor, ending: borderStroke)
+            borderFill!.draw(in: border, angle: 90.0)
+        } else {
+            borderStroke.setFill()
+            border.fill()
+        }
 
         let highlight = NSBezierPath()
 
@@ -107,8 +116,8 @@ class SHButtonCell: NSButtonCell {
                         controlPoint2: .init(x: topLeftPoint.x - radius / 2, y: topLeftPoint.y))
         highlight.close()
 
-        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.5 : 0.97)),
-                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0 : 0.5)))
+        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.43 : 0.97)),
+                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0.18 : 0.5)))
         highlightFill!.draw(in: highlight, angle: 90.0)
     }
 
