@@ -36,7 +36,7 @@ class SHButtonCell: NSButtonCell {
         shadow.set()
 
         let background = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
-        let backgroundColor = isDark ? NSColor(white: 0.11, alpha: 1.0) : NSColor(white: 1.0, alpha: 1.0)
+        let backgroundColor = isDark ? NSColor(white: 0.22, alpha: 1.0) : NSColor(white: 1.0, alpha: 1.0)
         backgroundColor.setFill()
         background.fill()
 
@@ -62,7 +62,7 @@ class SHButtonCell: NSButtonCell {
         background.setClip()
 
         let innerShadow = NSShadow()
-        innerShadow.shadowColor = isDark ? NSColor(white: 1, alpha: 0.2) : NSColor(white: 0, alpha: 0.2)
+        innerShadow.shadowColor = (isDark && !isHighlighted) ? NSColor(white: 1, alpha: 0.1) : NSColor(white: 0, alpha: 0.2)
         innerShadow.shadowOffset = CGSize(width: 0, height: -2)
         innerShadow.shadowBlurRadius = 3
         innerShadow.set()
@@ -107,8 +107,8 @@ class SHButtonCell: NSButtonCell {
                         controlPoint2: .init(x: topLeftPoint.x - radius / 2, y: topLeftPoint.y))
         highlight.close()
 
-        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : 0.97),
-                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : 0.5))
+        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.5 : 0.97)),
+                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0 : 0.5)))
         highlightFill!.draw(in: highlight, angle: 90.0)
     }
 
