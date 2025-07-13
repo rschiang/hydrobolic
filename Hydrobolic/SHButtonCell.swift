@@ -25,6 +25,7 @@ class SHButtonCell: NSButtonCell {
 
     override func drawBezel(withFrame frame: NSRect, in controlView: NSView) {
         let rect = calculateFrame(forControlView: controlView)
+        let isDark = controlView.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
 
         NSGraphicsContext.saveGraphicsState()
 
@@ -35,6 +36,8 @@ class SHButtonCell: NSButtonCell {
         shadow.set()
 
         let background = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
+        let backgroundColor = isDark ? NSColor(white: 0.11, alpha: 1.0) : NSColor(white: 1.0, alpha: 1.0)
+        backgroundColor.setFill()
         background.fill()
 
         NSGraphicsContext.restoreGraphicsState()
@@ -47,9 +50,9 @@ class SHButtonCell: NSButtonCell {
                                             (NSColor(red: 0.631, green: 0.855, blue: 1.0, alpha: 1.0), 0.77),
                                             (NSColor(red: 0.733, green: 0.925, blue: 1.0, alpha: 1.0), 1)) :
                                 NSGradient(colorsAndLocations:
-                                            (NSColor(white: 0.76, alpha: 1.0), 0),
-                                            (NSColor(white: 0.96, alpha: 1.0), 0.77),
-                                            (NSColor(white: 1.0, alpha: 1.0), 1))
+                                            (NSColor(white: 0, alpha: 0.24), 0),
+                                            (NSColor(white: 0, alpha: 0.04), 0.77),
+                                            (NSColor(white: 0, alpha: 0), 1))
         backgroundFill!.draw(in: background, angle: 90.0)
 
         let border = NSBezierPath(roundedRect: rect.insetBy(dx: -1.0, dy: -1.0), xRadius: radius + 1.0, yRadius: radius + 1.0)
@@ -59,9 +62,9 @@ class SHButtonCell: NSButtonCell {
         background.setClip()
 
         let innerShadow = NSShadow()
-        innerShadow.shadowColor = NSColor(white: 0, alpha: 0.2)
-        innerShadow.shadowOffset = CGSize(width: 0, height: -1)
-        innerShadow.shadowBlurRadius = 2
+        innerShadow.shadowColor = isDark ? NSColor(white: 1, alpha: 0.2) : NSColor(white: 0, alpha: 0.2)
+        innerShadow.shadowOffset = CGSize(width: 0, height: -2)
+        innerShadow.shadowBlurRadius = 3
         innerShadow.set()
 
         let borderStroke = NSColor(white: 0.44, alpha: 1.0)
@@ -70,8 +73,8 @@ class SHButtonCell: NSButtonCell {
         NSGraphicsContext.restoreGraphicsState()
 
         let borderFill = NSGradient(starting: isHighlighted ?
-                                    NSColor(red: 0.2, green: 0.231, blue: 0.667, alpha: 1.0) : NSColor(white: 0.55, alpha: 1.0),
-                                    ending: NSColor(white: 0.44, alpha: 1.0))
+                                    NSColor(red: 0.153, green: 0.153, blue: 0.604, alpha: 1.0) : NSColor(white: 0, alpha: 0.55),
+                                    ending: NSColor(white: 0, alpha: 0.627))
         borderFill!.draw(in: border, angle: 90.0)
 
         let highlight = NSBezierPath()
@@ -82,7 +85,7 @@ class SHButtonCell: NSButtonCell {
         let topRightPoint = NSPoint(x: rect.maxX - radius - 1, y: rect.minY)
         highlight.line(to: topRightPoint)
 
-        let rightCurvePoint = NSPoint(x: rect.maxX - 3, y: rect.minY + radius - 4)
+        let rightCurvePoint = NSPoint(x: rect.maxX - 2, y: rect.minY + radius - 4)
         highlight.curve(to: rightCurvePoint,
                         controlPoint1: .init(x: topRightPoint.x + radius / 2, y: topRightPoint.y),
                         controlPoint2: .init(x: rightCurvePoint.x, y: rightCurvePoint.y - 2))
@@ -92,10 +95,10 @@ class SHButtonCell: NSButtonCell {
                         controlPoint1: .init(x: rightCurvePoint.x, y: rightCurvePoint.y + 2),
                         controlPoint2: .init(x: bottomRightPoint.x - 1, y: bottomRightPoint.y))
 
-        let bottomLeftPoint = NSPoint(x: rect.minX + 5, y: bottomRightPoint.y)
+        let bottomLeftPoint = NSPoint(x: rect.minX + 4, y: bottomRightPoint.y)
         highlight.line(to: bottomLeftPoint)
 
-        let leftCurvePoint = NSPoint(x: rect.minX + 3, y: rightCurvePoint.y)
+        let leftCurvePoint = NSPoint(x: rect.minX + 2, y: rightCurvePoint.y)
         highlight.curve(to: leftCurvePoint,
                         controlPoint1: .init(x: bottomLeftPoint.x + 1, y: bottomLeftPoint.y),
                         controlPoint2: .init(x: leftCurvePoint.x, y: leftCurvePoint.y + 2))
