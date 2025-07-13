@@ -62,20 +62,15 @@ class SHButtonCell: NSButtonCell {
         let isDark = controlView.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
         let accentColor = (controlView as! NSButton).contentTintColor ?? NSColor.controlAccentColor
 
-        NSGraphicsContext.saveGraphicsState()
-
-        let shadow = NSShadow()
-        shadow.shadowColor = NSColor(white: 0, alpha: 0.3)
-        shadow.shadowOffset = CGSize(width: 0, height: -1.5)
-        shadow.shadowBlurRadius = 0.75
-        shadow.set()
-
         let background = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
         let backgroundColor = isDark ? NSColor(white: 0.22, alpha: 1.0) : NSColor(white: 1.0, alpha: 1.0)
-        backgroundColor.setFill()
-        background.fill()
-
-        NSGraphicsContext.restoreGraphicsState()
+        let shadow = NSShadow(color: .init(white: 0, alpha: 0.3),
+                              offset: .init(width: 0, height: -1.5),
+                              blurRadius: 0.75)
+        shadow.apply {
+            backgroundColor.setFill()
+            background.fill()
+        }
 
         if (isHighlighted) {
             let accentFill = NSGradient(colorsAndLocations:
@@ -91,24 +86,24 @@ class SHButtonCell: NSButtonCell {
                                             (NSColor(white: 0, alpha: 0), 1))
         backgroundFill!.draw(in: background, angle: 90.0)
 
-        let outer = NSBezierPath(roundedRect: rect.insetBy(dx: -2.0, dy: -2.0), xRadius: radius + 2.0, yRadius: radius + 2.0)
-        outer.append(background.reversed)
+        let innerShadow = NSShadow(
+                            color: isDark ? .init(white: 1, alpha: 0.05) : .init(white: 0, alpha: 0.2),
+                            offset: .init(width: 0, height: -1),
+                            blurRadius: 3)
+        innerShadow.apply {
+            background.setClip()
 
-        NSGraphicsContext.saveGraphicsState()
-        background.setClip()
+            let outer = NSBezierPath(roundedRect: rect.insetBy(dx: -2.0, dy: -2.0),
+                                     xRadius: radius + 2.0, yRadius: radius + 2.0)
+            outer.append(background.reversed)
 
-        let innerShadow = NSShadow()
-        innerShadow.shadowColor = isDark ? NSColor(white: 1, alpha: 0.05) : NSColor(white: 0, alpha: 0.2)
-        innerShadow.shadowOffset = CGSize(width: 0, height: -1)
-        innerShadow.shadowBlurRadius = 3
-        innerShadow.set()
+            let outerFill = NSColor(white: 0.44, alpha: 1.0)
+            outerFill.setFill()
+            outer.fill()
+        }
 
-        let outerFill = NSColor(white: 0.44, alpha: 1.0)
-        outerFill.setFill()
-        outer.fill()
-        NSGraphicsContext.restoreGraphicsState()
-
-        let border = NSBezierPath(roundedRect: rect.insetBy(dx: -1.0, dy: -1.0), xRadius: radius + 1, yRadius: radius + 1)
+        let border = NSBezierPath(roundedRect: rect.insetBy(dx: -1.0, dy: -1.0),
+                                  xRadius: radius + 1, yRadius: radius + 1)
         border.append(background.reversed)
 
         let borderStroke = NSColor(white: isDark ? 0.22 : 0, alpha: 0.44)
@@ -121,7 +116,6 @@ class SHButtonCell: NSButtonCell {
         }
 
         let highlight = createHighlightPathForButton(in: rect)
-
         let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.43 : 0.97)),
                                        ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0.18 : 0.5)))
         highlightFill!.draw(in: highlight, angle: 90.0)
