@@ -64,9 +64,9 @@ class SHButtonCell: NSButtonCell {
         background.setClip()
 
         let innerShadow = NSShadow()
-        innerShadow.shadowColor = (isDark || isHighlighted) ? NSColor(white: 1, alpha: 0.1) : NSColor(white: 0, alpha: 0.2)
+        innerShadow.shadowColor = isDark ? NSColor(white: 1, alpha: 0.05) : NSColor(white: 0, alpha: 0.2)
         innerShadow.shadowOffset = CGSize(width: 0, height: -1)
-        innerShadow.shadowBlurRadius = 4
+        innerShadow.shadowBlurRadius = 3
         innerShadow.set()
 
         let outerFill = NSColor(white: 0.44, alpha: 1.0)
