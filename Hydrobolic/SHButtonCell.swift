@@ -106,7 +106,7 @@ class SHButtonCell: NSButtonCell {
                                   xRadius: radius + 1, yRadius: radius + 1)
         border.append(background.reversed)
 
-        let borderStroke = NSColor(white: isDark ? 0.22 : 0, alpha: 0.44)
+        let borderStroke = NSColor(white: 0, alpha: isDark ? 0.22 : 0.44)
         if (isHighlighted) {
             let borderFill = NSGradient(starting: accentColor, ending: borderStroke)
             borderFill!.draw(in: border, angle: 90.0)
@@ -116,8 +116,8 @@ class SHButtonCell: NSButtonCell {
         }
 
         let highlight = createHighlightPathForButton(in: rect)
-        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.43 : 0.97)),
-                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0.18 : 0.5)))
+        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.38 : 0.97)),
+                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0.2 : 0.5)))
         highlightFill!.draw(in: highlight, angle: 90.0)
     }
 
