@@ -13,8 +13,9 @@ struct SHAppearance {
 
     static let controlBackgroundColor: NSColor = .white
     static let controlBackgroundColorDark: NSColor = .init(calibratedWhite: 0.22, alpha: 1)
-    static let controlBorderColor: NSColor = .init(calibratedWhite: 0, alpha: 0.44)
-    static let controlBorderColorDark: NSColor = .init(calibratedWhite: 0, alpha: 0.22)
+    static let controlBorderColor: NSColor = .black.withAlphaComponent(0.44)
+    static let controlBorderColorDark: NSColor = .black.withAlphaComponent(0.22)
+    static let controlBorderColorSolid: NSColor = .init(calibratedWhite: 0.44, alpha: 1)
 
     // Gradients
 

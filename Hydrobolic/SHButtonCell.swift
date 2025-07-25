@@ -11,18 +11,22 @@ import AppKit
 class SHButtonCell: NSButtonCell {
     private let radius: CGFloat = 10.0
 
+    /// Calculates the physical control bound to draw within the frame.
     private func calculateFrame(forControlView: NSView) -> NSRect {
         let frame = forControlView.frame
         let insets = forControlView.alignmentRectInsets
-        return NSRect(x: frame.minX + insets.left + insets.right, y: frame.minY + insets.top + insets.bottom,
+        return NSRect(x: frame.minX + insets.left + insets.right,
+                      y: frame.minY + insets.top + insets.bottom,
                       width: frame.width - insets.left - insets.right,
                       height: frame.height - insets.top - insets.bottom)
     }
 
+    /// Creates a clipping path for the control view.
     private func createPath(forControlView: NSView) -> NSBezierPath {
         return NSBezierPath(roundedRect: calculateFrame(forControlView: forControlView), xRadius: radius, yRadius: radius)
     }
 
+    /// Creates a clipping path that resembles the highlighted gloss area of a button.
     private func createHighlightPathForButton(in rect: NSRect) -> NSBezierPath {
         let path = NSBezierPath()
 
@@ -57,6 +61,9 @@ class SHButtonCell: NSButtonCell {
         return path
     }
 
+    // Override functions
+
+    /// Draws the background (bezel) of the button depending on its style.
     override func drawBezel(withFrame frame: NSRect, in controlView: NSView) {
         let rect = calculateFrame(forControlView: controlView)
         let isDark = controlView.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
@@ -75,34 +82,32 @@ class SHButtonCell: NSButtonCell {
                                             (accentColor, 0),
                                             (accentColor.withAlphaComponent(0.44), 0.56),
                                             (accentColor.withAlphaComponent(0.25), 1))
-            accentFill!.draw(in: background, angle: 90.0)
+            accentFill!.draw(in: background, angle: 90)
         }
 
         let backgroundFill = (isDark && isHighlighted) ? SHAppearance.controlBackgroundGradientDark :
                                                          SHAppearance.controlBackgroundGradient
-        backgroundFill.draw(in: background, angle: 90.0)
+        backgroundFill.draw(in: background, angle: 90)
 
-        let innerShadow = isDark ? SHAppearance.controlInnerGlow: SHAppearance.controlInnerShadow
+        let innerShadow = isDark ? SHAppearance.controlInnerGlow : SHAppearance.controlInnerShadow
         innerShadow.apply {
             background.setClip()
 
-            let outer = NSBezierPath(roundedRect: rect.insetBy(dx: -2.0, dy: -2.0),
-                                     xRadius: radius + 2.0, yRadius: radius + 2.0)
+            let outer = NSBezierPath(outsetRoundedRect: rect, radius: radius, by: 2)
             outer.append(background.reversed)
 
-            let outerFill = NSColor(white: 0.44, alpha: 1.0)
+            let outerFill = SHAppearance.controlBorderColorSolid
             outerFill.setFill()
             outer.fill()
         }
 
-        let border = NSBezierPath(roundedRect: rect.insetBy(dx: -1.0, dy: -1.0),
-                                  xRadius: radius + 1, yRadius: radius + 1)
+        let border = NSBezierPath(outsetRoundedRect: rect, radius: radius, by: 1)
         border.append(background.reversed)
 
         let borderStroke = isDark ? SHAppearance.controlBorderColorDark : SHAppearance.controlBorderColor
         if (isHighlighted) {
             let borderFill = NSGradient(starting: accentColor, ending: borderStroke)
-            borderFill!.draw(in: border, angle: 90.0)
+            borderFill!.draw(in: border, angle: 90)
         } else {
             borderStroke.setFill()
             border.fill()
@@ -112,7 +117,7 @@ class SHButtonCell: NSButtonCell {
         let highlightFill = isHighlighted ? SHAppearance.controlHighlightGradientFocused :
                                             isDark ? SHAppearance.controlHighlightGradientDark :
                                                      SHAppearance.controlHighlightGradient
-        highlightFill.draw(in: highlight, angle: 90.0)
+        highlightFill.draw(in: highlight, angle: 90)
     }
 
     override func hitTest(for event: NSEvent, in cellFrame: NSRect, of controlView: NSView) -> NSCell.HitResult {
