@@ -78,7 +78,8 @@ class SHButtonCell: NSButtonCell {
             accentFill!.draw(in: background, angle: 90.0)
         }
 
-        let backgroundFill = SHAppearance.controlBackgroundGradient
+        let backgroundFill = (isDark && isHighlighted) ? SHAppearance.controlBackgroundGradientDark :
+                                                         SHAppearance.controlBackgroundGradient
         backgroundFill.draw(in: background, angle: 90.0)
 
         let innerShadow = isDark ? SHAppearance.controlInnerGlow: SHAppearance.controlInnerShadow

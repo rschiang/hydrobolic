@@ -12,38 +12,42 @@ struct SHAppearance {
     // Colors
 
     static let controlBackgroundColor: NSColor = .white
-    static let controlBackgroundColorDark: NSColor = .init(calibratedWhite: 0.22, alpha: 1.0)
+    static let controlBackgroundColorDark: NSColor = .init(calibratedWhite: 0.22, alpha: 1)
     static let controlBorderColor: NSColor = .init(calibratedWhite: 0, alpha: 0.44)
     static let controlBorderColorDark: NSColor = .init(calibratedWhite: 0, alpha: 0.22)
 
     // Gradients
 
     static let controlBackgroundGradient: NSGradient = .init(colorsAndLocations:
-                                                                (NSColor(white: 0, alpha: 0.24), 0),
-                                                                (NSColor(white: 0, alpha: 0.04), 0.77),
-                                                                (NSColor(white: 0, alpha: 0), 1))!
+                                                                (.black.withAlphaComponent(0.24), 0),
+                                                                (.black.withAlphaComponent(0.04), 0.77),
+                                                                (.black.withAlphaComponent(0), 1))!
 
-    static let controlHighlightGradient: NSGradient = .init(starting: .init(calibratedWhite: 1.0, alpha: 0.97),
-                                                            ending: .init(calibratedWhite: 1.0, alpha: 0.5))!
+    static let controlBackgroundGradientDark: NSGradient = .init(colorsAndLocations:
+                                                                (.white.withAlphaComponent(0.24), 0),
+                                                                (.white.withAlphaComponent(0.04), 0.77),
+                                                                (.white.withAlphaComponent(0), 1))!
 
-    static let controlHighlightGradientDark: NSGradient = .init(starting: .init(calibratedWhite: 1.0, alpha: 0.38),
-                                                                ending: .init(calibratedWhite: 1.0, alpha: 0.2))!
+    static let controlHighlightGradient: NSGradient = .init(starting: .white.withAlphaComponent(0.97),
+                                                            ending: .white.withAlphaComponent(0.5))!
 
-    static let controlHighlightGradientFocused: NSGradient = .init(starting: .init(calibratedWhite: 1.0, alpha: 0.85),
-                                                                   ending: .init(calibratedWhite: 1.0, alpha: 0.33))!
+    static let controlHighlightGradientDark: NSGradient = .init(starting: .white.withAlphaComponent(0.38),
+                                                                ending: .white.withAlphaComponent(0.2))!
+
+    static let controlHighlightGradientFocused: NSGradient = .init(starting: .white.withAlphaComponent(0.85),
+                                                                   ending: .white.withAlphaComponent(0.33))!
 
     // Shadows
 
-    static let controlShadow: NSShadow = .init(color: .init(calibratedWhite: 0, alpha: 0.3),
+    static let controlShadow: NSShadow = .init(color: .black.withAlphaComponent(0.3),
                                                offset: .init(width: 0, height: -1.5),
                                                blurRadius: 0.75)
 
-    static let controlInnerShadow: NSShadow = .init(color: .init(calibratedWhite: 0, alpha: 0.2),
+    static let controlInnerShadow: NSShadow = .init(color: .black.withAlphaComponent(0.2),
                                                     offset: .init(width: 0, height: -1),
                                                     blurRadius: 3)
 
-    static let controlInnerGlow: NSShadow = .init(color: .init(calibratedWhite: 1, alpha: 0.05),
+    static let controlInnerGlow: NSShadow = .init(color: .black.withAlphaComponent(0.05),
                                                   offset: .init(width: 0, height: -1),
                                                   blurRadius: 3)
-
 }
