@@ -63,10 +63,8 @@ class SHButtonCell: NSButtonCell {
         let accentColor = (controlView as! NSButton).contentTintColor ?? NSColor.controlAccentColor
 
         let background = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
-        let backgroundColor = isDark ? NSColor(white: 0.22, alpha: 1.0) : NSColor(white: 1.0, alpha: 1.0)
-        let shadow = NSShadow(color: .init(white: 0, alpha: 0.3),
-                              offset: .init(width: 0, height: -1.5),
-                              blurRadius: 0.75)
+        let backgroundColor = isDark ? SHAppearance.controlBackgroundColorDark : SHAppearance.controlBackgroundColor
+        let shadow = SHAppearance.controlShadow
         shadow.apply {
             backgroundColor.setFill()
             background.fill()
@@ -80,16 +78,10 @@ class SHButtonCell: NSButtonCell {
             accentFill!.draw(in: background, angle: 90.0)
         }
 
-        let backgroundFill = NSGradient(colorsAndLocations:
-                                            (NSColor(white: 0, alpha: 0.24), 0),
-                                            (NSColor(white: 0, alpha: 0.04), 0.77),
-                                            (NSColor(white: 0, alpha: 0), 1))
-        backgroundFill!.draw(in: background, angle: 90.0)
+        let backgroundFill = SHAppearance.controlBackgroundGradient
+        backgroundFill.draw(in: background, angle: 90.0)
 
-        let innerShadow = NSShadow(
-                            color: isDark ? .init(white: 1, alpha: 0.05) : .init(white: 0, alpha: 0.2),
-                            offset: .init(width: 0, height: -1),
-                            blurRadius: 3)
+        let innerShadow = isDark ? SHAppearance.controlInnerGlow: SHAppearance.controlInnerShadow
         innerShadow.apply {
             background.setClip()
 
@@ -106,7 +98,7 @@ class SHButtonCell: NSButtonCell {
                                   xRadius: radius + 1, yRadius: radius + 1)
         border.append(background.reversed)
 
-        let borderStroke = NSColor(white: 0, alpha: isDark ? 0.22 : 0.44)
+        let borderStroke = isDark ? SHAppearance.controlBorderColorDark : SHAppearance.controlBorderColor
         if (isHighlighted) {
             let borderFill = NSGradient(starting: accentColor, ending: borderStroke)
             borderFill!.draw(in: border, angle: 90.0)
@@ -116,9 +108,10 @@ class SHButtonCell: NSButtonCell {
         }
 
         let highlight = createHighlightPathForButton(in: rect)
-        let highlightFill = NSGradient(starting: NSColor(white: 1.0, alpha: isHighlighted ? 0.85 : (isDark ? 0.38 : 0.97)),
-                                       ending: NSColor(white: 1.0, alpha: isHighlighted ? 0.33 : (isDark ? 0.2 : 0.5)))
-        highlightFill!.draw(in: highlight, angle: 90.0)
+        let highlightFill = isHighlighted ? SHAppearance.controlHighlightGradientFocused :
+                                            isDark ? SHAppearance.controlHighlightGradientDark :
+                                                     SHAppearance.controlHighlightGradient
+        highlightFill.draw(in: highlight, angle: 90.0)
     }
 
     override func hitTest(for event: NSEvent, in cellFrame: NSRect, of controlView: NSView) -> NSCell.HitResult {
