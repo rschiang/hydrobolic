@@ -65,9 +65,12 @@ class SHButtonCell: NSButtonCell {
 
     /// Draws the background (bezel) of the button depending on its style.
     override func drawBezel(withFrame frame: NSRect, in controlView: NSView) {
+        let button = controlView as! NSButton
+
         let rect = calculateFrame(forControlView: controlView)
-        let isDark = controlView.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
-        let accentColor = (controlView as! NSButton).contentTintColor ?? NSColor.controlAccentColor
+        let isDark = button.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+        let accentColor = button.contentTintColor ?? NSColor.controlAccentColor
+        let bezelStyle = button.bezelStyle
 
         let background = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
         let backgroundColor = isDark ? SHAppearance.controlBackgroundColorDark : SHAppearance.controlBackgroundColor
