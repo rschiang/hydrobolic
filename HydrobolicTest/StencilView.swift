@@ -13,36 +13,61 @@ class StencilView: NSView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
-        let view = NSStackView()
-        view.orientation = .vertical
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let buttonNormal = SHButton(title: "Button")
+        buttonNormal.setMinimumSizeConstraint(width: 82)
+
+        let buttonDefault = NSButton(title: "Default", keyEquivalent: "\r")
+        buttonDefault.setMinimumSizeConstraint(width: 82)
+
+        let buttonBeveled = NSButton(bezelStyle: .regularSquare, title: "Bevel")
+        buttonBeveled.setMinimumSizeConstraint(width: 82, height: 25)
+
+        let buttonSquare = NSButton(bezelStyle: .shadowlessSquare, title: "Square")
+        buttonSquare.setMinimumSizeConstraint(width: 82, height: 25)
+
+        let radioButtons = NSStackView(.vertical, alignment: .leading, spacing: 6, views: [
+            NSButton(radioButtonWithTitle: "Radio", state: .on, action: #selector(radioButtonClicked)),
+            NSButton(radioButtonWithTitle: "Radio", action: #selector(radioButtonClicked))
+        ])
+
+        let checkboxes = NSStackView(.vertical, alignment: .leading, spacing: 6, views: [
+            NSButton(checkboxWithTitle: "Switch", state: .on),
+            NSButton(checkboxWithTitle: "Switch")
+        ])
+
+        let slider = NSSlider(value: 0.5, minValue: 0, maxValue: 1, target: nil, action: nil)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+
+        let ticker = NSSlider(value: 0.5, minValue: 0, maxValue: 1, target: nil, action: nil)
+        ticker.numberOfTickMarks = 3
+        ticker.tickMarkPosition = .below
+        ticker.translatesAutoresizingMaskIntoConstraints = false
+
+        let view = NSStackView(.vertical, alignment: .centerX)
         view.setHuggingPriority(.fittingSizeCompression, for: .horizontal)
         view.setHuggingPriority(.fittingSizeCompression, for: .vertical)
 
-        let columns = NSStackView()
-        columns.orientation = .horizontal
-        columns.alignment = .top
-        columns.spacing = 12
-        columns.translatesAutoresizingMaskIntoConstraints = false
+        let leftColumn = NSStackView(.vertical, alignment: .leading)
+        let rightColumn = NSStackView(.vertical, alignment: .leading, views: {
+
+            let pushButtonRow = NSStackView(.horizontal, alignment: .centerY, views: [buttonNormal, buttonDefault])
+
+            return [
+                pushButtonRow,
+                NSStackView(.horizontal, alignment: .centerY, views: [buttonBeveled, buttonSquare]),
+                NSStackView(.horizontal, alignment: .centerY, distribution: .fillEqually, views: [radioButtons, checkboxes]),
+                slider,
+                ticker,
+            ]
+        }())
+        let columns = NSStackView(.horizontal, alignment: .top, spacing: 12, views: [leftColumn, rightColumn])
         view.addView(columns, in: .center)
-
-        let leftColumn = NSStackView()
-        leftColumn.orientation = .vertical
-        leftColumn.alignment = .leading
-        leftColumn.translatesAutoresizingMaskIntoConstraints = false
-        columns.addArrangedSubview(leftColumn)
-
-        let rightColumn = NSStackView()
-        rightColumn.orientation = .vertical
-        rightColumn.alignment = .leading
-        rightColumn.translatesAutoresizingMaskIntoConstraints = false
-        columns.addArrangedSubview(rightColumn)
 
         let textField = NSTextField()
         textField.placeholderString = "Text field"
         textField.translatesAutoresizingMaskIntoConstraints = false
         leftColumn.addArrangedSubview(textField)
-        textField.widthAnchor.constraint(greaterThanOrEqualToConstant: 153).isActive = true
+        textField.setMinimumSizeConstraint(width: 153)
 
         let popup = NSPopUpButton()
         popup.addItem(withTitle: "Pop Up Menu")
@@ -61,31 +86,21 @@ class StencilView: NSView {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         leftColumn.addArrangedSubview(datePicker)
 
-        let buttonTextured = NSButton()
-        buttonTextured.title = "Button"
-        buttonTextured.bezelStyle = .texturedSquare
-        buttonTextured.translatesAutoresizingMaskIntoConstraints = false
+        let buttonTextured = NSButton(bezelStyle: .texturedSquare, title: "Button")
         buttonTextured.sizeToFit()
         leftColumn.addArrangedSubview(buttonTextured)
 
-        let buttonHelp = NSButton()
-        buttonHelp.title = ""
-        buttonHelp.bezelStyle = .helpButton
-        buttonHelp.translatesAutoresizingMaskIntoConstraints = false
+        let buttonHelp = NSButton(bezelStyle: .helpButton)
         buttonHelp.sizeToFit()
-        view.addSubview(buttonHelp)
+        leftColumn.addSubview(buttonHelp)
         buttonHelp.leadingAnchor.constraint(equalToSystemSpacingAfter: buttonTextured.trailingAnchor, multiplier: 1).isActive = true
         buttonHelp.centerYAnchor.constraint(equalTo: buttonTextured.centerYAnchor).isActive = true
 
-        let buttonCircular = NSButton()
-        buttonCircular.title = ""
-        buttonCircular.bezelStyle = .circular
-        buttonCircular.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(buttonCircular)
+        let buttonCircular = NSButton(bezelStyle: .circular)
+        leftColumn.addSubview(buttonCircular)
         buttonCircular.leadingAnchor.constraint(equalTo: datePicker.trailingAnchor, constant: 16).isActive = true
         buttonCircular.centerYAnchor.constraint(equalTo: datePicker.bottomAnchor).isActive = true
-        buttonCircular.widthAnchor.constraint(greaterThanOrEqualToConstant: 26).isActive = true
-        buttonCircular.heightAnchor.constraint(greaterThanOrEqualToConstant: 26).isActive = true
+        buttonCircular.setMinimumSizeConstraint(width: 26, height: 26)
 
         let progressIndeterminate = NSProgressIndicator()
         progressIndeterminate.observedProgress = .init()
@@ -93,90 +108,7 @@ class StencilView: NSView {
 
         leftColumn.addArrangedSubview(progressIndeterminate)
         progressIndeterminate.widthAnchor.constraint(greaterThanOrEqualTo: textField.widthAnchor).isActive = true
-        progressIndeterminate.heightAnchor.constraint(greaterThanOrEqualToConstant: 16).isActive = true
-
-        let pushButtonRow = NSStackView()
-        pushButtonRow.orientation = .horizontal
-        rightColumn.addArrangedSubview(pushButtonRow)
-
-        let buttonNormal = SHButton()
-        buttonNormal.title = "Button"
-        buttonNormal.translatesAutoresizingMaskIntoConstraints = false
-        pushButtonRow.addArrangedSubview(buttonNormal)
-        buttonNormal.widthAnchor.constraint(greaterThanOrEqualToConstant: 82).isActive = true
-
-        let buttonDefault = NSButton()
-        buttonDefault.title = "Default"
-        buttonDefault.keyEquivalent = "\r"
-        buttonDefault.translatesAutoresizingMaskIntoConstraints = false
-        pushButtonRow.addArrangedSubview(buttonDefault)
-        buttonDefault.widthAnchor.constraint(greaterThanOrEqualToConstant: 82).isActive = true
-
-        let beveledButtonRow = NSStackView()
-        beveledButtonRow.orientation = .horizontal
-        rightColumn.addArrangedSubview(beveledButtonRow)
-
-        let buttonBeveled = NSButton()
-        buttonBeveled.title = "Bevel"
-        buttonBeveled.bezelStyle = .regularSquare
-        buttonBeveled.translatesAutoresizingMaskIntoConstraints = false
-        beveledButtonRow.addArrangedSubview(buttonBeveled)
-        buttonBeveled.widthAnchor.constraint(greaterThanOrEqualToConstant: 82).isActive = true
-        buttonBeveled.heightAnchor.constraint(greaterThanOrEqualToConstant: 25).isActive = true
-
-        let buttonSquare = NSButton()
-        buttonSquare.title = "Square"
-        buttonSquare.bezelStyle = .shadowlessSquare
-        buttonSquare.translatesAutoresizingMaskIntoConstraints = false
-        beveledButtonRow.addArrangedSubview(buttonSquare)
-        buttonSquare.widthAnchor.constraint(greaterThanOrEqualToConstant: 82).isActive = true
-        buttonSquare.heightAnchor.constraint(greaterThanOrEqualToConstant: 25).isActive = true
-
-        let radioButtonRow = NSStackView()
-        radioButtonRow.orientation = .horizontal
-        radioButtonRow.distribution = .fillEqually
-        rightColumn.addArrangedSubview(radioButtonRow)
-        radioButtonRow.widthAnchor.constraint(greaterThanOrEqualTo: pushButtonRow.widthAnchor).isActive = true
-
-        let radioButtons = NSStackView()
-        radioButtons.orientation = .vertical
-        radioButtons.alignment = .leading
-        radioButtons.spacing = 6
-        radioButtonRow.addArrangedSubview(radioButtons)
-
-        let radio1 = NSButton(radioButtonWithTitle: "Radio", target: nil, action: nil)
-        radio1.state = .on
-        radio1.translatesAutoresizingMaskIntoConstraints = false
-        radioButtons.addArrangedSubview(radio1)
-
-        let radio2 = NSButton(radioButtonWithTitle: "Radio", target: nil, action: nil)
-        radio2.translatesAutoresizingMaskIntoConstraints = false
-        radioButtons.addArrangedSubview(radio2)
-
-        let checkboxes = NSStackView()
-        checkboxes.orientation = .vertical
-        checkboxes.alignment = .leading
-        checkboxes.spacing = 6
-        radioButtonRow.addArrangedSubview(checkboxes)
-
-        let checkbox1 = NSButton(checkboxWithTitle: "Switch", target: nil, action: nil)
-        checkbox1.state = .on
-        checkbox1.translatesAutoresizingMaskIntoConstraints = false
-        checkboxes.addArrangedSubview(checkbox1)
-
-        let checkbox2 = NSButton(checkboxWithTitle: "Switch", target: nil, action: nil)
-        checkbox2.translatesAutoresizingMaskIntoConstraints = false
-        checkboxes.addArrangedSubview(checkbox2)
-
-        let slider = NSSlider(value: 0.5, minValue: 0, maxValue: 1, target: nil, action: nil)
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        rightColumn.addArrangedSubview(slider)
-
-        let ticker = NSSlider(value: 0.5, minValue: 0, maxValue: 1, target: nil, action: nil)
-        ticker.numberOfTickMarks = 3
-        ticker.tickMarkPosition = .below
-        ticker.translatesAutoresizingMaskIntoConstraints = false
-        rightColumn.addArrangedSubview(ticker)
+        progressIndeterminate.setMinimumSizeConstraint(height: 16)
 
         let progressIndicator = NSProgressIndicator()
         progressIndicator.observedProgress = .init(totalUnitCount: 100)
@@ -186,7 +118,7 @@ class StencilView: NSView {
         view.addArrangedSubview(progressIndicator)
         progressIndicator.leadingAnchor.constraint(equalTo: leftColumn.leadingAnchor).isActive = true
         progressIndicator.trailingAnchor.constraint(equalTo: rightColumn.trailingAnchor).isActive = true
-        progressIndicator.heightAnchor.constraint(greaterThanOrEqualToConstant: 16).isActive = true
+        progressIndicator.setMinimumSizeConstraint(height: 16)
 
         let tabView = NSTabView()
         tabView.translatesAutoresizingMaskIntoConstraints = false
@@ -212,6 +144,10 @@ class StencilView: NSView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) not implemented")
+    }
+
+    @objc
+    func radioButtonClicked(_ sender: Any?) {
     }
 }
 
