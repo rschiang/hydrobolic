@@ -31,6 +31,16 @@ extension NSStackView {
     }
 }
 
+extension NSTabView {
+
+    func addTabViewItem(_ label: String, view: NSView? = nil) {
+        let item = NSTabViewItem()
+        item.label = label
+        item.view = view
+        self.addTabViewItem(item)
+    }
+}
+
 extension NSButton {
     convenience init(radioButtonWithTitle: String, state: NSControl.StateValue = .off, action: Selector? = nil) {
         self.init(radioButtonWithTitle: radioButtonWithTitle, target: nil, action: action)

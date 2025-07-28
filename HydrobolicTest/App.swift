@@ -20,7 +20,7 @@ class App: NSObject, NSApplicationDelegate {
         let view = StencilView()
         window.setContentSize(view.fittingSize)
         window.contentView = view
-        window.makeFirstResponder(nil)
+        window.makeFirstResponder(view.initialFirstResponder)
 
         window.makeKeyAndOrderFront(nil)
         window.center()

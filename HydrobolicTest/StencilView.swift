@@ -10,20 +10,53 @@ import Hydrobolic
 
 class StencilView: NSView {
 
+    var initialFirstResponder: NSResponder?
+
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
-        let buttonNormal = SHButton(title: "Button")
-        buttonNormal.setMinimumSizeConstraint(width: 82)
+        let textField = NSTextField()
+        textField.placeholderString = "Text field"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.setMinimumSizeConstraint(width: 153)
 
-        let buttonDefault = NSButton(title: "Default", keyEquivalent: "\r")
-        buttonDefault.setMinimumSizeConstraint(width: 82)
+        let popupButton = NSPopUpButton()
+        popupButton.addItem(withTitle: "Pop Up Menu")
+        popupButton.translatesAutoresizingMaskIntoConstraints = false
 
-        let buttonBeveled = NSButton(bezelStyle: .regularSquare, title: "Bevel")
-        buttonBeveled.setMinimumSizeConstraint(width: 82, height: 25)
+        let comboBox = NSComboBox()
+        comboBox.stringValue = "Combo Box"
+        comboBox.translatesAutoresizingMaskIntoConstraints = false
 
-        let buttonSquare = NSButton(bezelStyle: .shadowlessSquare, title: "Square")
-        buttonSquare.setMinimumSizeConstraint(width: 82, height: 25)
+        let datePicker = NSDatePicker()
+        datePicker.datePickerElements = .yearMonthDay
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+
+        let texturedButton = NSButton(bezelStyle: .texturedSquare, title: "Button")
+        texturedButton.sizeToFit()
+
+        let helpButton = NSButton(bezelStyle: .helpButton)
+        helpButton.sizeToFit()
+
+        let circularButton = NSButton(bezelStyle: .circular)
+        circularButton.setMinimumSizeConstraint(width: 26, height: 26)
+
+        let indeterminateProgressBar = NSProgressIndicator()
+        indeterminateProgressBar.observedProgress = .init()
+        indeterminateProgressBar.translatesAutoresizingMaskIntoConstraints = false
+        indeterminateProgressBar.setMinimumSizeConstraint(height: 16)
+
+        let normalButton = NSButton(title: "Button")
+        normalButton.setMinimumSizeConstraint(width: 82)
+
+        let defaultButton = NSButton(title: "Default", keyEquivalent: "\r")
+        defaultButton.setMinimumSizeConstraint(width: 82)
+
+        let bevelButton = NSButton(bezelStyle: .regularSquare, title: "Bevel")
+        bevelButton.setMinimumSizeConstraint(width: 82, height: 25)
+
+        let squareButton = NSButton(bezelStyle: .shadowlessSquare, title: "Square")
+        squareButton.setMinimumSizeConstraint(width: 82, height: 25)
 
         let radioButtons = NSStackView(.vertical, alignment: .leading, spacing: 6, views: [
             NSButton(radioButtonWithTitle: "Radio", state: .on, action: #selector(radioButtonClicked)),
@@ -43,82 +76,51 @@ class StencilView: NSView {
         ticker.tickMarkPosition = .below
         ticker.translatesAutoresizingMaskIntoConstraints = false
 
-        let view = NSStackView(.vertical, alignment: .centerX)
-        view.setHuggingPriority(.fittingSizeCompression, for: .horizontal)
-        view.setHuggingPriority(.fittingSizeCompression, for: .vertical)
+        let progressBar = NSProgressIndicator()
+        progressBar.observedProgress = .init(totalUnitCount: 100)
+        progressBar.observedProgress?.completedUnitCount = 60
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        progressBar.setMinimumSizeConstraint(height: 16)
 
-        let leftColumn = NSStackView(.vertical, alignment: .leading)
-        let rightColumn = NSStackView(.vertical, alignment: .leading, views: {
+        let controls = StackViewBuilder(.vertical)
+            .addKeySubview(
+                NSStackView(.horizontal, alignment: .top, spacing: 16, views: [
+                    StackViewBuilder(.vertical, alignment: .leading)
+                        .addKeySubview(textField)
+                        .addAlignedSubview(popupButton)
+                        .addAlignedSubview(comboBox)
+                        .addArrangedSubview(datePicker)
+                        .addUnmanagedSubview(helpButton)
+                        .addUnmanagedSubview(circularButton)
+                        .addArrangedSubview(texturedButton)
+                        .addAlignedSubview(indeterminateProgressBar)
+                        .build(additionalConstraints: [
+                            helpButton.leadingAnchor.constraint(equalToSystemSpacingAfter: texturedButton.trailingAnchor, multiplier: 1),
+                            helpButton.centerYAnchor.constraint(equalTo: texturedButton.centerYAnchor),
+                            circularButton.leadingAnchor.constraint(equalToSystemSpacingAfter: datePicker.trailingAnchor, multiplier: 1.5),
+                            circularButton.centerYAnchor.constraint(equalTo: datePicker.bottomAnchor),
+                        ]),
+                    StackViewBuilder(.vertical)
+                        .addKeySubview(NSStackView(.horizontal, alignment: .centerY, views: [normalButton, defaultButton]))
+                        .addAlignedSubview(NSStackView(.horizontal, alignment: .centerY, views: [bevelButton, squareButton]))
+                        .addAlignedSubview(NSStackView(.horizontal, alignment: .centerY, distribution: .fillEqually, views: [radioButtons, checkboxes]))
+                        .addAlignedSubview(slider)
+                        .addAlignedSubview(ticker)
+                        .build()
+                ])
+            )
+            .addAlignedSubview(progressBar)
+            .build()
+        controls.setHuggingPriority(.fittingSizeCompression, for: .horizontal)
+        controls.setHuggingPriority(.fittingSizeCompression, for: .vertical)
 
-            let pushButtonRow = NSStackView(.horizontal, alignment: .centerY, views: [buttonNormal, buttonDefault])
-
-            return [
-                pushButtonRow,
-                NSStackView(.horizontal, alignment: .centerY, views: [buttonBeveled, buttonSquare]),
-                NSStackView(.horizontal, alignment: .centerY, distribution: .fillEqually, views: [radioButtons, checkboxes]),
-                slider,
-                ticker,
-            ]
-        }())
-        let columns = NSStackView(.horizontal, alignment: .top, spacing: 12, views: [leftColumn, rightColumn])
-        view.addView(columns, in: .center)
-
-        let textField = NSTextField()
-        textField.placeholderString = "Text field"
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        leftColumn.addArrangedSubview(textField)
-        textField.setMinimumSizeConstraint(width: 153)
-
-        let popup = NSPopUpButton()
-        popup.addItem(withTitle: "Pop Up Menu")
-        popup.translatesAutoresizingMaskIntoConstraints = false
-        leftColumn.addArrangedSubview(popup)
-        popup.widthAnchor.constraint(greaterThanOrEqualTo: textField.widthAnchor).isActive = true
-
-        let comboBox = NSComboBox()
-        comboBox.stringValue = "Combo Box"
-        comboBox.translatesAutoresizingMaskIntoConstraints = false
-        leftColumn.addArrangedSubview(comboBox)
-        comboBox.widthAnchor.constraint(greaterThanOrEqualTo: textField.widthAnchor).isActive = true
-
-        let datePicker = NSDatePicker()
-        datePicker.datePickerElements = .yearMonthDay
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        leftColumn.addArrangedSubview(datePicker)
-
-        let buttonTextured = NSButton(bezelStyle: .texturedSquare, title: "Button")
-        buttonTextured.sizeToFit()
-        leftColumn.addArrangedSubview(buttonTextured)
-
-        let buttonHelp = NSButton(bezelStyle: .helpButton)
-        buttonHelp.sizeToFit()
-        leftColumn.addSubview(buttonHelp)
-        buttonHelp.leadingAnchor.constraint(equalToSystemSpacingAfter: buttonTextured.trailingAnchor, multiplier: 1).isActive = true
-        buttonHelp.centerYAnchor.constraint(equalTo: buttonTextured.centerYAnchor).isActive = true
-
-        let buttonCircular = NSButton(bezelStyle: .circular)
-        leftColumn.addSubview(buttonCircular)
-        buttonCircular.leadingAnchor.constraint(equalTo: datePicker.trailingAnchor, constant: 16).isActive = true
-        buttonCircular.centerYAnchor.constraint(equalTo: datePicker.bottomAnchor).isActive = true
-        buttonCircular.setMinimumSizeConstraint(width: 26, height: 26)
-
-        let progressIndeterminate = NSProgressIndicator()
-        progressIndeterminate.observedProgress = .init()
-        progressIndeterminate.translatesAutoresizingMaskIntoConstraints = false
-
-        leftColumn.addArrangedSubview(progressIndeterminate)
-        progressIndeterminate.widthAnchor.constraint(greaterThanOrEqualTo: textField.widthAnchor).isActive = true
-        progressIndeterminate.setMinimumSizeConstraint(height: 16)
-
-        let progressIndicator = NSProgressIndicator()
-        progressIndicator.observedProgress = .init(totalUnitCount: 100)
-        progressIndicator.observedProgress?.completedUnitCount = 60
-        progressIndicator.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addArrangedSubview(progressIndicator)
-        progressIndicator.leadingAnchor.constraint(equalTo: leftColumn.leadingAnchor).isActive = true
-        progressIndicator.trailingAnchor.constraint(equalTo: rightColumn.trailingAnchor).isActive = true
-        progressIndicator.setMinimumSizeConstraint(height: 16)
+        let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controls)
+        view.leadingAnchor.constraint(equalTo: controls.leadingAnchor, constant: -15).isActive = true
+        view.bottomAnchor.constraint(equalTo: controls.bottomAnchor, constant: 12).isActive = true
+        view.widthAnchor.constraint(equalToConstant: controls.fittingSize.width + 30).isActive = true
+        view.heightAnchor.constraint(equalToConstant: controls.fittingSize.height + 21).isActive = true
 
         let tabView = NSTabView()
         tabView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,18 +130,9 @@ class StencilView: NSView {
         tabView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor).isActive = true
         tabView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor).isActive = true
 
-        let tab1 = NSTabViewItem()
-        tab1.label = "Tab"
-        tab1.view = view
-        tabView.addTabViewItem(tab1)
-
-        let tab2 = NSTabViewItem()
-        tab2.label = "View"
-        tab2.view = view
-        tabView.addTabViewItem(tab2)
-
-        view.widthAnchor.constraint(equalToConstant: view.fittingSize.width + 30).isActive = true
-        view.heightAnchor.constraint(equalToConstant: view.fittingSize.height + 12).isActive = true
+        tabView.addTabViewItem("Tab", view: view)
+        tabView.addTabViewItem("View", view: view)
+        self.initialFirstResponder = circularButton
     }
 
     required init?(coder: NSCoder) {
