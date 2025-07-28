@@ -10,8 +10,10 @@ import SwiftUI
 @main
 struct HydrobolicTestApp: App {
     var body: some Scene {
-        WindowGroup {
-            StencilView()
+        WindowGroup("UI Stencil") {
+            StencilView().fixedSize()
         }
+        .windowIdealSize(.fitToContent)
+        .restorationBehavior(.disabled)
     }
 }
