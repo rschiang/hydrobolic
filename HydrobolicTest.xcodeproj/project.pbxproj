@@ -6,7 +6,29 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2B0954712E3786AE00854176 /* Hydrobolic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B09546C2E3785B900854176 /* Hydrobolic.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2B09546B2E3785B900854176 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B0954672E3785B900854176 /* Hydrobolic.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2B20EF072E3783AE006EB4A4;
+			remoteInfo = Hydrobolic;
+		};
+		2B09546D2E3785CA00854176 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B0954672E3785B900854176 /* Hydrobolic.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B20EF062E3783AE006EB4A4;
+			remoteInfo = Hydrobolic;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		2B0954672E3785B900854176 /* Hydrobolic.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Hydrobolic.xcodeproj; sourceTree = "<group>"; };
 		2BB9983F2E36B0D500E199E9 /* HydrobolicTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HydrobolicTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -23,16 +45,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B0954712E3786AE00854176 /* Hydrobolic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B0954682E3785B900854176 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B09546C2E3785B900854176 /* Hydrobolic.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B09546F2E37867700854176 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2BB998362E36B0D500E199E9 = {
 			isa = PBXGroup;
 			children = (
+				2B0954672E3785B900854176 /* Hydrobolic.xcodeproj */,
 				2BB998412E36B0D500E199E9 /* HydrobolicTest */,
+				2B09546F2E37867700854176 /* Frameworks */,
 				2BB998402E36B0D500E199E9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +99,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2B09546E2E3785CA00854176 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				2BB998412E36B0D500E199E9 /* HydrobolicTest */,
@@ -97,12 +138,28 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2BB998402E36B0D500E199E9 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2B0954682E3785B900854176 /* Products */;
+					ProjectRef = 2B0954672E3785B900854176 /* Hydrobolic.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				2BB9983E2E36B0D500E199E9 /* HydrobolicTest */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2B09546C2E3785B900854176 /* Hydrobolic.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Hydrobolic.framework;
+			remoteRef = 2B09546B2E3785B900854176 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2BB9983D2E36B0D500E199E9 /* Resources */ = {
@@ -123,6 +180,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2B09546E2E3785CA00854176 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Hydrobolic;
+			targetProxy = 2B09546D2E3785CA00854176 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2BB9984C2E36B0D600E199E9 /* Debug */ = {
@@ -263,7 +328,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -287,7 +352,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

@@ -8,7 +8,7 @@
 import Foundation
 import AppKit
 
-class SHButtonCell: NSButtonCell {
+public class SHButtonCell: NSButtonCell {
     private let radius: CGFloat = 10.0
 
     /// Calculates the physical control bound to draw within the frame.
@@ -64,7 +64,7 @@ class SHButtonCell: NSButtonCell {
     // Override functions
 
     /// Draws the background (bezel) of the button depending on its style.
-    override func drawBezel(withFrame frame: NSRect, in controlView: NSView) {
+    public override func drawBezel(withFrame frame: NSRect, in controlView: NSView) {
         let button = controlView as! NSButton
 
         let rect = calculateFrame(forControlView: controlView)
@@ -123,7 +123,7 @@ class SHButtonCell: NSButtonCell {
         highlightFill.draw(in: highlight, angle: 90)
     }
 
-    override func hitTest(for event: NSEvent, in cellFrame: NSRect, of controlView: NSView) -> NSCell.HitResult {
+    public override func hitTest(for event: NSEvent, in cellFrame: NSRect, of controlView: NSView) -> NSCell.HitResult {
         if (event.window == controlView.window) {
             let hitPoint = controlView.convert(event.locationInWindow, from: nil)
             let cellPath = createPath(forControlView: controlView)
@@ -134,7 +134,7 @@ class SHButtonCell: NSButtonCell {
         return []
     }
 
-    override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
+    public override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
         let cellPath = createPath(forControlView: controlView)
         cellPath.fill()
     }

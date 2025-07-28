@@ -7,6 +7,7 @@
 
 import AppKit
 import SwiftUI
+import Hydrobolic
 
 class SHStencilView: NSView {
 
