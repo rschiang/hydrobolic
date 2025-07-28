@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import SwiftUI
 import Hydrobolic
 
 class SHStencilView: NSView {
@@ -81,7 +80,6 @@ class SHStencilView: NSView {
         let buttonCircular = NSButton()
         buttonCircular.title = ""
         buttonCircular.bezelStyle = .circular
-        buttonCircular.isHighlighted = true
         buttonCircular.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonCircular)
         buttonCircular.leadingAnchor.constraint(equalTo: datePicker.trailingAnchor, constant: 16).isActive = true
@@ -101,7 +99,7 @@ class SHStencilView: NSView {
         pushButtonRow.orientation = .horizontal
         rightColumn.addArrangedSubview(pushButtonRow)
 
-        let buttonNormal = NSButton()
+        let buttonNormal = SHButton()
         buttonNormal.title = "Button"
         buttonNormal.translatesAutoresizingMaskIntoConstraints = false
         pushButtonRow.addArrangedSubview(buttonNormal)
@@ -217,6 +215,8 @@ class SHStencilView: NSView {
     }
 }
 
+#if DEBUG
+import SwiftUI
 struct StencilView: View, NSViewRepresentable {
     typealias NSViewType = SHStencilView
 
@@ -235,3 +235,4 @@ struct StencilView: View, NSViewRepresentable {
 #Preview {
     StencilView()
 }
+#endif

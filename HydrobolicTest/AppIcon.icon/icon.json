@@ -1,0 +1,69 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "srgb:0.59216,0.85098,0.99608,1.00000",
+      "srgb:0.02353,0.34902,0.65098,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "blur-material" : 0.5,
+      "hidden" : false,
+      "layers" : [
+        {
+          "image-name" : "aqua.button.svg",
+          "name" : "aqua.button"
+        }
+      ],
+      "name" : "Group",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 1
+      },
+      "specular" : false,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blend-mode" : "soft-light",
+      "blur-material" : 0.5,
+      "hidden" : false,
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "image-name" : "button.horizontal.fill.svg",
+          "name" : "shine",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 2,
+            "translation-in-points" : [
+              0,
+              -400
+            ]
+          }
+        }
+      ],
+      "opacity" : 0.5,
+      "shadow" : {
+        "kind" : "layer-color",
+        "opacity" : 0.3
+      },
+      "specular" : false,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
