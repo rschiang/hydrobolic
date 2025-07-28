@@ -10,12 +10,25 @@ import AppKit
 @main
 class App: NSObject, NSApplicationDelegate {
 
-    var window: NSWindow!
+    var windows: [NSWindow] = []
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        window = StencilWindow(scale: 2)
-        window.makeKeyAndOrderFront(nil)
-        window.center()
+        windows = [
+            StencilWindow(useCustomControls: true, appearance: .aqua),
+            StencilWindow(useCustomControls: true, appearance: .darkAqua),
+            StencilWindow(useCustomControls: false),
+        ]
+
+        let screen = NSScreen.main!.visibleFrame
+        let frame = CGSize(width: 450, height: 280)
+
+        var x = screen.minX + (screen.width - frame.width * CGFloat(windows.count)) / 2.0
+        let y = screen.minY + (screen.height - frame.height) / 2.0
+        for window in windows {
+            window.orderFront(nil)
+            window.setFrameOrigin(.init(x: x, y: y))
+            x += frame.width
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
