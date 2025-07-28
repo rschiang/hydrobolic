@@ -18,12 +18,16 @@ class StackViewBuilder {
     /// - Parameters:
     ///   - orientation: The horizontal or vertical layout direction of the stack view.
     ///   - alignment: The view alignment within the stack view.
-    init(_ orientation: NSUserInterfaceLayoutOrientation = .horizontal, alignment: NSLayoutConstraint.Attribute = .notAnAttribute) {
+    ///   - distribution: The item distribution within the stack view.
+    init(_ orientation: NSUserInterfaceLayoutOrientation = .horizontal, alignment: NSLayoutConstraint.Attribute = .notAnAttribute, distribution: NSStackView.Distribution = .gravityAreas) {
         stackView = NSStackView()
         stackView.orientation = orientation
         stackView.translatesAutoresizingMaskIntoConstraints = false
         if (alignment != .notAnAttribute) {
             stackView.alignment = alignment
+        }
+        if (distribution != .gravityAreas) {
+            stackView.distribution = distribution
         }
     }
 

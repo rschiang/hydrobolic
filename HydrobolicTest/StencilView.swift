@@ -10,10 +10,29 @@ import Hydrobolic
 
 class StencilView: NSView {
 
+    /// The nominated first responder for the parent window to focus.
     var initialFirstResponder: NSResponder?
 
+    /// Whether customized controls were used to render the components.
+    let useCustomControls: Bool
+
+    /// Creates a `StencilView` with the specified control type.
+    init(useCustomControls: Bool) {
+        self.useCustomControls = useCustomControls
+        super.init(frame: .zero)
+        initializeComponents()
+    }
+
+    /// Creates a `StencilView` with standard controls.
     override init(frame frameRect: NSRect) {
+        self.useCustomControls = false
         super.init(frame: frameRect)
+        initializeComponents()
+    }
+
+    /// Creates all UI components in this view.
+    private func initializeComponents() {
+        self.translatesAutoresizingMaskIntoConstraints = false
 
         let textField = NSTextField()
         textField.placeholderString = "Text field"
@@ -32,13 +51,13 @@ class StencilView: NSView {
         datePicker.datePickerElements = .yearMonthDay
         datePicker.translatesAutoresizingMaskIntoConstraints = false
 
-        let texturedButton = NSButton(bezelStyle: .texturedSquare, title: "Button")
+        let texturedButton = createButton(bezelStyle: .texturedSquare, title: "Button")
         texturedButton.sizeToFit()
 
-        let helpButton = NSButton(bezelStyle: .helpButton)
+        let helpButton = createButton(bezelStyle: .helpButton)
         helpButton.sizeToFit()
 
-        let circularButton = NSButton(bezelStyle: .circular)
+        let circularButton = createButton(bezelStyle: .circular)
         circularButton.setMinimumSizeConstraint(width: 26, height: 26)
 
         let indeterminateProgressBar = NSProgressIndicator()
@@ -46,16 +65,16 @@ class StencilView: NSView {
         indeterminateProgressBar.translatesAutoresizingMaskIntoConstraints = false
         indeterminateProgressBar.setMinimumSizeConstraint(height: 16)
 
-        let normalButton = NSButton(title: "Button")
+        let normalButton = createButton(title: "Button")
         normalButton.setMinimumSizeConstraint(width: 82)
 
-        let defaultButton = NSButton(title: "Default", keyEquivalent: "\r")
+        let defaultButton = createButton(title: "Default", keyEquivalent: "\r")
         defaultButton.setMinimumSizeConstraint(width: 82)
 
-        let bevelButton = NSButton(bezelStyle: .regularSquare, title: "Bevel")
+        let bevelButton = createButton(bezelStyle: .regularSquare, title: "Bevel")
         bevelButton.setMinimumSizeConstraint(width: 82, height: 25)
 
-        let squareButton = NSButton(bezelStyle: .shadowlessSquare, title: "Square")
+        let squareButton = createButton(bezelStyle: .shadowlessSquare, title: "Square")
         squareButton.setMinimumSizeConstraint(width: 82, height: 25)
 
         let radioButtons = NSStackView(.vertical, alignment: .leading, spacing: 6, views: [
@@ -100,7 +119,7 @@ class StencilView: NSView {
                             circularButton.leadingAnchor.constraint(equalToSystemSpacingAfter: datePicker.trailingAnchor, multiplier: 1.5),
                             circularButton.centerYAnchor.constraint(equalTo: datePicker.bottomAnchor),
                         ]),
-                    StackViewBuilder(.vertical)
+                    StackViewBuilder(.vertical, alignment: .leading, distribution: .fill)
                         .addKeySubview(NSStackView(.horizontal, alignment: .centerY, views: [normalButton, defaultButton]))
                         .addAlignedSubview(NSStackView(.horizontal, alignment: .centerY, views: [bevelButton, squareButton]))
                         .addAlignedSubview(NSStackView(.horizontal, alignment: .centerY, distribution: .fillEqually, views: [radioButtons, checkboxes]))
@@ -114,13 +133,13 @@ class StencilView: NSView {
         controls.setHuggingPriority(.fittingSizeCompression, for: .horizontal)
         controls.setHuggingPriority(.fittingSizeCompression, for: .vertical)
 
-        let view = NSView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(controls)
-        view.leadingAnchor.constraint(equalTo: controls.leadingAnchor, constant: -15).isActive = true
-        view.bottomAnchor.constraint(equalTo: controls.bottomAnchor, constant: 12).isActive = true
-        view.widthAnchor.constraint(equalToConstant: controls.fittingSize.width + 30).isActive = true
-        view.heightAnchor.constraint(equalToConstant: controls.fittingSize.height + 21).isActive = true
+        let contentView = NSView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(controls)
+        contentView.leadingAnchor.constraint(equalTo: controls.leadingAnchor, constant: -16).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: controls.bottomAnchor, constant: 12).isActive = true
+        contentView.widthAnchor.constraint(equalToConstant: controls.fittingSize.width + 32).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: controls.fittingSize.height + 21).isActive = true
 
         let tabView = NSTabView()
         tabView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,9 +149,18 @@ class StencilView: NSView {
         tabView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor).isActive = true
         tabView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor).isActive = true
 
-        tabView.addTabViewItem("Tab", view: view)
-        tabView.addTabViewItem("View", view: view)
+        tabView.addTabViewItem("Tab", view: contentView)
+        tabView.addTabViewItem("View", view: contentView)
         self.initialFirstResponder = circularButton
+    }
+
+    private func createButton(bezelStyle: NSButton.BezelStyle = .automatic, title: String = "", keyEquivalent: String = "") -> NSButton {
+        let button = self.useCustomControls ? SHButton() : NSButton()
+        button.title = title
+        button.translatesAutoresizingMaskIntoConstraints = false
+        if (bezelStyle != .automatic) { button.bezelStyle = bezelStyle }
+        if (keyEquivalent != "") { button.keyEquivalent = keyEquivalent }
+        return button
     }
 
     required init?(coder: NSCoder) {
@@ -150,7 +178,7 @@ struct StencilViewWrapper: View, NSViewRepresentable {
     typealias NSViewType = StencilView
 
     func makeNSView(context: Context) -> StencilView {
-        return StencilView()
+        return StencilView(useCustomControls: true)
     }
 
     func updateNSView(_ nsView: StencilView, context: Context) {

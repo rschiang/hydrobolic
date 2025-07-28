@@ -53,22 +53,6 @@ extension NSButton {
         self.state = state
         self.translatesAutoresizingMaskIntoConstraints = false
     }
-
-    convenience init(title: String, keyEquivalent: String? = nil) {
-        self.init()
-        self.title = title
-        if (keyEquivalent != nil) {
-            self.keyEquivalent = keyEquivalent!
-        }
-        self.translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    convenience init(bezelStyle: NSButton.BezelStyle, title: String = "") {
-        self.init()
-        self.bezelStyle = bezelStyle
-        self.title = title
-        self.translatesAutoresizingMaskIntoConstraints = false
-    }
 }
 
 extension NSView {

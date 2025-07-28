@@ -13,15 +13,7 @@ class App: NSObject, NSApplicationDelegate {
     var window: NSWindow!
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        window = NSWindow()
-        window.title = "UI Stencil"
-        window.styleMask = [.titled, .closable, .miniaturizable]
-
-        let view = StencilView()
-        window.setContentSize(view.fittingSize)
-        window.contentView = view
-        window.makeFirstResponder(view.initialFirstResponder)
-
+        window = StencilWindow(scale: 2)
         window.makeKeyAndOrderFront(nil)
         window.center()
     }

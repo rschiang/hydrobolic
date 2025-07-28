@@ -1,0 +1,47 @@
+//
+//  StencilWindow.swift
+//  HydrobolicTest
+//
+//  Displays the UI stencil.
+//
+
+import AppKit
+
+class StencilWindow : NSWindow {
+
+    init(useCustomControls: Bool = false, scale: CGFloat = 1.0, appearance: NSAppearance? = nil) {
+        super.init(contentRect: .zero, styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
+        self.title = "UI Stencil"
+
+        let viewController = StencilViewController()
+        viewController.scale = scale
+        self.contentViewController = viewController
+    }
+
+}
+
+class StencilViewController : NSViewController {
+
+    var window: NSWindow? { self.view.window }
+    var contentView: StencilView?
+    var scale: CGFloat = 1.0
+
+    override func loadView() {
+        let view = NSView(frame: .init(x: 0, y: 0, width: 320, height: 240))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.view = view
+        if (scale > 1.0) {
+            view.scaleUnitSquare(to: .init(width: scale, height: scale))
+        }
+
+        let contentView = StencilView(useCustomControls: false)
+        self.contentView = contentView
+        view.addSubview(contentView)
+    }
+
+    override func viewDidAppear() {
+        let bounds = contentView!.bounds
+        window!.setContentSize(.init(width: bounds.width * scale, height: bounds.height * scale))
+        window!.makeFirstResponder(contentView?.initialFirstResponder)
+    }
+}
