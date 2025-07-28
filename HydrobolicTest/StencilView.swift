@@ -8,7 +8,7 @@
 import AppKit
 import Hydrobolic
 
-class SHStencilView: NSView {
+class StencilView: NSView {
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -217,22 +217,22 @@ class SHStencilView: NSView {
 
 #if DEBUG
 import SwiftUI
-struct StencilView: View, NSViewRepresentable {
-    typealias NSViewType = SHStencilView
+struct StencilViewWrapper: View, NSViewRepresentable {
+    typealias NSViewType = StencilView
 
-    func makeNSView(context: Context) -> SHStencilView {
-        return SHStencilView()
+    func makeNSView(context: Context) -> StencilView {
+        return StencilView()
     }
 
-    func updateNSView(_ nsView: SHStencilView, context: Context) {
+    func updateNSView(_ nsView: StencilView, context: Context) {
     }
 
-    func sizeThatFits(_ proposal: ProposedViewSize, nsView: SHStencilView, context: Context) -> CGSize? {
+    func sizeThatFits(_ proposal: ProposedViewSize, nsView: StencilView, context: Context) -> CGSize? {
         return nsView.fittingSize
     }
 }
 
 #Preview {
-    StencilView()
+    StencilViewWrapper()
 }
 #endif

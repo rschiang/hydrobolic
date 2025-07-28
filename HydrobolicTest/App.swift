@@ -5,7 +5,7 @@
 //  Main application scene.
 //
 
-import Cocoa
+import AppKit
 
 @main
 class App: NSObject, NSApplicationDelegate {
@@ -17,7 +17,7 @@ class App: NSObject, NSApplicationDelegate {
         window.title = "UI Stencil"
         window.styleMask = [.titled, .closable, .miniaturizable]
 
-        let view = SHStencilView()
+        let view = StencilView()
         window.setContentSize(view.fittingSize)
         window.contentView = view
         window.makeFirstResponder(nil)
@@ -30,10 +30,24 @@ class App: NSObject, NSApplicationDelegate {
         return true
     }
 
+    func createMenu() -> NSMenu {
+        let menu = NSMenu(title: "Main Menu")
+
+        let applicationMenu = NSMenuItem()
+        applicationMenu.submenu = NSMenu()
+        applicationMenu.submenu?.addItem(withTitle: "About", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+        applicationMenu.submenu?.addItem(NSMenuItem.separator())
+        applicationMenu.submenu?.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        menu.addItem(applicationMenu)
+
+        return menu
+    }
+
     static func main() {
         let app = NSApplication.shared
         let delegate = App()
         app.delegate = delegate
+        app.mainMenu = delegate.createMenu()
         _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
     }
 }
